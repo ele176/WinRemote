@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+
+# Downloaded third-party binaries
+tools/
+
+# Runtime logs and local tunnel state
+.runtime*/
+*.log
+*.tmp
+
+# Local editor and OS files
+.vscode/
+.idea/
+.vs/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
+
+# PowerShell transcripts
+PowerShell_transcript*.txt

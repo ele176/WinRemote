@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="420" viewBox="0 0 1180 420" role="img" aria-labelledby="title desc">
+  <title id="title">WinRemote public access flow</title>
+  <desc id="desc">iPhone Safari reaches Windows Agent through Cloudflare Tunnel over HTTPS without using the same Wi-Fi.</desc>
+  <defs>
+    <style>
+      .bg { fill: #101316; }
+      .panel { fill: #181d21; stroke: #334047; stroke-width: 2; rx: 8; }
+      .panel2 { fill: #14251d; stroke: #2fa36b; stroke-width: 2; rx: 8; }
+      .text { fill: #f4f1ea; font-family: "Segoe UI", Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .sub { fill: #aeb8b2; font-family: "Segoe UI", Arial, sans-serif; font-size: 17px; }
+      .small { fill: #9ea8a3; font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
+      .ok { fill: #dff8e9; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; font-weight: 700; }
+      .arrow { stroke: #4e8bc4; stroke-width: 5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e8bc4"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1180" height="420"/>
+  <text x="50" y="56" class="text">公网模式：iPhone 不需要和 Windows 在同一个 Wi-Fi</text>
+  <text x="50" y="88" class="sub">Windows 只监听本机 127.0.0.1，Cloudflare Tunnel 负责把 HTTPS 地址转发回来。</text>
+
+  <rect x="54" y="150" width="220" height="140" class="panel2"/>
+  <text x="82" y="198" class="text">iPhone</text>
+  <text x="82" y="230" class="sub">Safari 打开</text>
+  <text x="82" y="258" class="small">https://*.trycloudflare.com</text>
+
+  <path d="M286 220 H406" class="arrow"/>
+
+  <rect x="420" y="150" width="250" height="140" class="panel"/>
+  <text x="452" y="198" class="text">Cloudflare Tunnel</text>
+  <text x="452" y="230" class="sub">HTTPS 公网入口</text>
+  <text x="452" y="258" class="small">--protocol http2</text>
+
+  <path d="M682 220 H802" class="arrow"/>
+
+  <rect x="816" y="150" width="300" height="140" class="panel"/>
+  <text x="848" y="198" class="text">Windows Agent</text>
+  <text x="848" y="230" class="sub">127.0.0.1:自动端口</text>
+  <text x="848" y="258" class="small">屏幕流 + 鼠标键盘控制</text>
+
+  <rect x="54" y="334" width="1062" height="46" class="panel"/>
+  <text x="82" y="364" class="ok">成功标志：终端里出现 Registered tunnel connection 后，再用手机打开公网地址。</text>
+</svg>

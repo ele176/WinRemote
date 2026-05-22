@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#111315">
+  <title>WinRemote</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="viewer" id="viewer">
+      <div class="stream-stage" id="streamStage">
+        <img id="screen" class="screen" alt="Windows screen">
+        <div class="empty-state" id="emptyState">
+          <div class="brand-mark">WR</div>
+          <div class="empty-title">WinRemote</div>
+          <div class="empty-subtitle" id="connectionText">等待连接</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="control-bar" aria-label="远程控制">
+      <button class="icon-button" id="reconnectBtn" type="button" title="重新连接" aria-label="重新连接">↻</button>
+      <button class="icon-button mode-button active" id="leftBtn" type="button" title="左键" aria-label="左键">L</button>
+      <button class="icon-button mode-button" id="rightBtn" type="button" title="右键" aria-label="右键">R</button>
+      <button class="icon-button" id="doubleBtn" type="button" title="双击" aria-label="双击">2×</button>
+      <button class="icon-button" id="wheelUpBtn" type="button" title="向上滚动" aria-label="向上滚动">↑</button>
+      <button class="icon-button" id="wheelDownBtn" type="button" title="向下滚动" aria-label="向下滚动">↓</button>
+      <button class="icon-button" id="keyboardBtn" type="button" title="键盘" aria-label="键盘">⌨</button>
+    </aside>
+
+    <section class="keyboard-panel" id="keyboardPanel" aria-label="键盘输入">
+      <input id="textInput" class="text-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send">
+      <button class="compact-button" id="backspaceBtn" type="button">⌫</button>
+      <button class="compact-button" id="enterBtn" type="button">↵</button>
+      <button class="compact-button" id="escBtn" type="button">Esc</button>
+    </section>
+
+    <section class="pair-panel" id="pairPanel" aria-label="配对">
+      <div class="pair-dialog">
+        <div class="pair-title">WinRemote</div>
+        <input id="pairCode" class="pair-code" inputmode="numeric" maxlength="8" placeholder="配对码">
+        <button id="pairBtn" class="primary-button" type="button">配对</button>
+        <div class="pair-status" id="pairStatus">在 Windows 端查看 8 位配对码</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

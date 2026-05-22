@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="620" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Open public URL on iPhone</title>
+  <desc id="desc">iPhone Safari opens the trycloudflare URL and enters the pairing code.</desc>
+  <defs>
+    <style>
+      .bg { fill: #101316; }
+      .phone { fill: #0b0d0f; stroke: #3b444b; stroke-width: 4; rx: 42; }
+      .screen { fill: #14181c; rx: 28; }
+      .address { fill: #222a30; stroke: #3b464e; stroke-width: 1.5; rx: 8; }
+      .dialog { fill: #1b2025; stroke: #334047; stroke-width: 2; rx: 8; }
+      .input { fill: #101316; stroke: #2fa36b; stroke-width: 2; rx: 8; }
+      .button { fill: #2fa36b; rx: 8; }
+      .text { fill: #f4f1ea; font-family: "Segoe UI", Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .sub { fill: #aeb8b2; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; }
+      .small { fill: #d9dedb; font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
+      .mono { fill: #61a7e8; font-family: Consolas, "Courier New", monospace; font-size: 16px; font-weight: 700; }
+      .warn { fill: #ffb096; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; font-weight: 700; }
+      .arrow { stroke: #4e8bc4; stroke-width: 5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e8bc4"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1180" height="620"/>
+  <text x="62" y="64" class="text">手机端打开方式</text>
+  <text x="62" y="100" class="sub">只打开 Cloudflare 给出的 HTTPS 地址，然后输入 Windows Agent 窗口里的 8 位配对码。</text>
+
+  <rect x="88" y="146" width="330" height="420" class="phone"/>
+  <rect x="112" y="184" width="282" height="344" class="screen"/>
+  <rect x="136" y="214" width="234" height="44" class="address"/>
+  <text x="154" y="242" class="mono">https://...trycloudflare.com</text>
+  <rect x="136" y="298" width="234" height="174" class="dialog"/>
+  <text x="168" y="336" class="text">WinRemote</text>
+  <rect x="166" y="358" width="174" height="44" class="input"/>
+  <text x="203" y="387" class="mono">12345678</text>
+  <rect x="166" y="418" width="174" height="38" class="button"/>
+  <text x="231" y="443" class="small">配对</text>
+
+  <path d="M456 350 H560" class="arrow"/>
+
+  <rect x="600" y="170" width="500" height="300" class="dialog"/>
+  <text x="640" y="222" class="text">不要打开这些地址</text>
+  <text x="640" y="270" class="warn">127.0.0.1</text>
+  <text x="770" y="270" class="sub">这是 Windows 自己访问自己的地址</text>
+  <text x="640" y="318" class="warn">localhost</text>
+  <text x="770" y="318" class="sub">在 iPhone 上表示 iPhone 自己</text>
+  <text x="640" y="366" class="warn">旧的 trycloudflare 地址</text>
+  <text x="870" y="366" class="sub">重启后会失效</text>
+  <text x="640" y="420" class="sub">每次重新运行 run-public.bat，都要使用新生成的 HTTPS 地址。</text>
+</svg>

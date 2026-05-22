@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+  <title id="title">WinRemote control guide</title>
+  <desc id="desc">Touch screen area and bottom control buttons explained.</desc>
+  <defs>
+    <style>
+      .bg { fill: #101316; }
+      .viewer { fill: #0b0d0f; stroke: #334047; stroke-width: 2; rx: 8; }
+      .toolbar { fill: #1b2025; stroke: #334047; stroke-width: 2; rx: 8; }
+      .btn { fill: #252b31; stroke: #3c464d; stroke-width: 2; rx: 8; }
+      .active { fill: #1f3a2c; stroke: #2fa36b; stroke-width: 2; rx: 8; }
+      .text { fill: #f4f1ea; font-family: "Segoe UI", Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .sub { fill: #aeb8b2; font-family: "Segoe UI", Arial, sans-serif; font-size: 18px; }
+      .small { fill: #d9dedb; font-family: "Segoe UI", Arial, sans-serif; font-size: 16px; }
+      .icon { fill: #f4f1ea; font-family: "Segoe UI", Arial, sans-serif; font-size: 28px; font-weight: 800; text-anchor: middle; dominant-baseline: middle; }
+      .line { stroke: #4e8bc4; stroke-width: 3; fill: none; stroke-linecap: round; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#4e8bc4"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1180" height="520"/>
+  <text x="58" y="58" class="text">控制界面说明</text>
+  <text x="58" y="92" class="sub">屏幕区域负责移动/拖拽，底部按钮负责切换鼠标模式和键盘输入。</text>
+
+  <rect x="70" y="130" width="680" height="270" class="viewer"/>
+  <text x="314" y="250" class="text">Windows 屏幕画面</text>
+  <text x="252" y="286" class="sub">手指按住拖动 = 鼠标拖拽</text>
+
+  <rect x="70" y="414" width="680" height="68" class="toolbar"/>
+  <rect x="112" y="428" width="48" height="42" class="btn"/><text x="136" y="449" class="icon">↻</text>
+  <rect x="176" y="428" width="48" height="42" class="active"/><text x="200" y="449" class="icon">L</text>
+  <rect x="240" y="428" width="48" height="42" class="btn"/><text x="264" y="449" class="icon">R</text>
+  <rect x="304" y="428" width="48" height="42" class="btn"/><text x="328" y="449" class="icon">2×</text>
+  <rect x="368" y="428" width="48" height="42" class="btn"/><text x="392" y="449" class="icon">↑</text>
+  <rect x="432" y="428" width="48" height="42" class="btn"/><text x="456" y="449" class="icon">↓</text>
+  <rect x="496" y="428" width="48" height="42" class="btn"/><text x="520" y="449" class="icon">⌨</text>
+
+  <path d="M200 428 C210 350 258 320 346 294" class="line"/>
+  <text x="790" y="164" class="text">按钮含义</text>
+  <text x="790" y="214" class="small">↻ 重新连接画面</text>
+  <text x="790" y="254" class="small">L  左键模式</text>
+  <text x="790" y="294" class="small">R  右键点击</text>
+  <text x="790" y="334" class="small">2× 双击当前位置</text>
+  <text x="790" y="374" class="small">↑↓ 滚动</text>
+  <text x="790" y="414" class="small">⌨ 打开文本输入栏</text>
+</svg>

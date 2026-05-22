@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+  <title id="title">Terminal checklist</title>
+  <desc id="desc">Important terminal lines for WinRemote public mode.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0c0e10; }
+      .window { fill: #15191d; stroke: #334047; stroke-width: 2; rx: 8; }
+      .bar { fill: #252a2f; }
+      .dot1 { fill: #d86c3d; }
+      .dot2 { fill: #d9b44a; }
+      .dot3 { fill: #2fa36b; }
+      .mono { fill: #d9dedb; font-family: Consolas, "Courier New", monospace; font-size: 22px; }
+      .muted { fill: #95a09a; font-family: Consolas, "Courier New", monospace; font-size: 20px; }
+      .green { fill: #43d17a; font-family: Consolas, "Courier New", monospace; font-size: 22px; font-weight: 700; }
+      .blue { fill: #61a7e8; font-family: Consolas, "Courier New", monospace; font-size: 22px; font-weight: 700; }
+      .label { fill: #f4f1ea; font-family: "Segoe UI", Arial, sans-serif; font-size: 22px; font-weight: 700; }
+      .callout { fill: #14251d; stroke: #2fa36b; stroke-width: 2; rx: 8; }
+    </style>
+  </defs>
+  <rect class="bg" width="1180" height="520"/>
+  <rect x="50" y="42" width="1080" height="392" class="window"/>
+  <rect x="50" y="42" width="1080" height="52" class="bar"/>
+  <circle cx="84" cy="68" r="8" class="dot1"/>
+  <circle cx="112" cy="68" r="8" class="dot2"/>
+  <circle cx="140" cy="68" r="8" class="dot3"/>
+  <text x="174" y="76" class="label">PowerShell - run-public.bat</text>
+
+  <text x="82" y="136" class="mono">PS C:\aicoding\ios Windows&gt; .\run-public.bat</text>
+  <text x="82" y="184" class="mono">Starting WinRemote Agent on localhost:17374.</text>
+  <text x="82" y="232" class="muted">Keep the Agent window open. It shows the 8-digit pairing code.</text>
+  <text x="82" y="280" class="green">Your quick Tunnel has been created! Visit it at:</text>
+  <text x="82" y="328" class="blue">https://famous-louise-lights-followed.trycloudflare.com</text>
+  <text x="82" y="376" class="green">Registered tunnel connection</text>
+
+  <rect x="50" y="454" width="1080" height="44" class="callout"/>
+  <text x="82" y="483" class="label">手机只打开 https://*.trycloudflare.com；看到 Registered tunnel connection 后再打开。</text>
+</svg>
