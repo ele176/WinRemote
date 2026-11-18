@@ -355,7 +355,7 @@ namespace WinRemoteAgent
                         return;
                     }
 
-                    Route(stream, request);
+                    Route(stream, client, request);
                 }
                 catch (Exception ex)
                 {
@@ -372,7 +372,7 @@ namespace WinRemoteAgent
             }
         }
 
-        private void Route(NetworkStream stream, HttpRequest request)
+        private void Route(NetworkStream stream, TcpClient client, HttpRequest request)
         {
             string path = request.Path;
 
@@ -426,7 +426,7 @@ namespace WinRemoteAgent
 
             if (request.Method == "GET" && path == "/stream.mjpg")
             {
-                HandleStream(stream, request);
+                HandleStream(stream, client, request);
                 return;
             }
 
@@ -496,7 +496,7 @@ namespace WinRemoteAgent
             HttpTools.WriteBytes(stream, 200, "image/jpeg", frame, headers);
         }
 
-        private void HandleStream(NetworkStream stream, HttpRequest request)
+        private void HandleStream(NetworkStream stream, TcpClient client, HttpRequest request)
         {
             int fps = HttpTools.QueryInt(request.Query, "fps", _state.Options.StreamFps, 1, 20);
             int width = HttpTools.QueryInt(request.Query, "width", _state.Options.StreamWidth, 320, 3840);
@@ -509,21 +509,49 @@ namespace WinRemoteAgent
                 + "Cache-Control: no-store, no-cache, must-revalidate\r\n"
                 + "Connection: close\r\n"
                 + "\r\n";
-            HttpTools.WriteAscii(stream, headers);
 
-            while (_running)
+            try
             {
-                byte[] frame = ScreenTools.CaptureJpeg(width, quality);
-                string part = "--" + boundary + "\r\n"
-                    + "Content-Type: image/jpeg\r\n"
-                    + "Content-Length: " + frame.Length.ToString(CultureInfo.InvariantCulture) + "\r\n"
-                    + "\r\n";
+                HttpTools.WriteAscii(stream, headers);
 
-                HttpTools.WriteAscii(stream, part);
-                stream.Write(frame, 0, frame.Length);
-                HttpTools.WriteAscii(stream, "\r\n");
-                stream.Flush();
-                Thread.Sleep(delay);
+                while (_running && IsClientAlive(client))
+                {
+                    byte[] frame = ScreenTools.CaptureJpeg(width, quality);
+                    string part = "--" + boundary + "\r\n"
+                        + "Content-Type: image/jpeg\r\n"
+                        + "Content-Length: " + frame.Length.ToString(CultureInfo.InvariantCulture) + "\r\n"
+                        + "\r\n";
+
+                    HttpTools.WriteAscii(stream, part);
+                    stream.Write(frame, 0, frame.Length);
+                    HttpTools.WriteAscii(stream, "\r\n");
+                    stream.Flush();
+                    Thread.Sleep(delay);
+                }
+            }
+            catch (IOException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+
+        private static bool IsClientAlive(TcpClient client)
+        {
+            try
+            {
+                Socket socket = client.Client;
+                if (socket == null || !socket.Connected)
+                {
+                    return false;
+                }
+
+                return !(socket.Poll(0, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -560,6 +588,8 @@ namespace WinRemoteAgent
 
     internal static class HttpTools
     {
+        private const int MaxBodyBytes = 64 * 1024;
+
         public static HttpRequest ReadRequest(NetworkStream stream)
         {
             byte[] headerBytes = ReadUntilHeaderEnd(stream, 65536);
@@ -575,7 +605,7 @@ namespace WinRemoteAgent
                 return null;
             }
 
-            string[] first = lines[0].Split(' ');
+            string[] first = lines[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (first.Length < 2)
             {
                 return null;
@@ -605,6 +635,11 @@ namespace WinRemoteAgent
             if (request.Headers.TryGetValue("content-length", out lengthValue))
             {
                 int.TryParse(lengthValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out length);
+            }
+
+            if (length < 0 || length > MaxBodyBytes)
+            {
+                return null;
             }
 
             request.Body = length > 0 ? ReadExact(stream, length) : new byte[0];
@@ -1034,6 +1069,8 @@ namespace WinRemoteAgent
         private const uint KEYEVENTF_KEYUP = 0x0002;
         private const uint KEYEVENTF_UNICODE = 0x0004;
         private const int INPUT_KEYBOARD = 1;
+        private const int MaxWheelDelta = 1200;
+        private const int MaxTextLength = 256;
 
         [DllImport("user32.dll")]
         private static extern bool SetCursorPos(int x, int y);
@@ -1122,6 +1159,9 @@ namespace WinRemoteAgent
                 {
                     return "bad_delta";
                 }
+
+                if (delta > MaxWheelDelta) delta = MaxWheelDelta;
+                if (delta < -MaxWheelDelta) delta = -MaxWheelDelta;
                 mouse_event(MOUSEEVENTF_WHEEL, 0, 0, delta, UIntPtr.Zero);
                 return null;
             }
@@ -1132,6 +1172,11 @@ namespace WinRemoteAgent
                 if (!form.TryGetValue("text", out text))
                 {
                     return "missing_text";
+                }
+
+                if (text.Length > MaxTextLength)
+                {
+                    text = text.Substring(0, MaxTextLength);
                 }
 
                 SendUnicodeText(text);

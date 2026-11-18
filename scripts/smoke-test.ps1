@@ -62,6 +62,30 @@ try {
       throw "Status API smoke check failed"
     }
 
+    $unauthorizedStatus = $null
+    try {
+      Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/api/status" -TimeoutSec 5 | Out-Null
+    }
+    catch {
+      $unauthorizedStatus = $_.Exception.Response.StatusCode.value__
+    }
+
+    if ($unauthorizedStatus -ne 401) {
+      throw "Unauthorized status request should return 401 (got: $unauthorizedStatus)"
+    }
+
+    $badPairStatus = $null
+    try {
+      Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/api/pair" -Method POST -Body "code=00000000" -ContentType "application/x-www-form-urlencoded" -TimeoutSec 5 | Out-Null
+    }
+    catch {
+      $badPairStatus = $_.Exception.Response.StatusCode.value__
+    }
+
+    if ($badPairStatus -ne 403) {
+      throw "Wrong pairing code should return 403 (got: $badPairStatus)"
+    }
+
     $pair = Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/api/pair" -Method POST -Body "code=$pairCode" -ContentType "application/x-www-form-urlencoded" -TimeoutSec 5
     if ($pair.StatusCode -ne 200 -or $pair.Content -notmatch $token) {
       throw "Pair API smoke check failed"

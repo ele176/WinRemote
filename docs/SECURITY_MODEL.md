@@ -17,6 +17,8 @@ The Windows Agent is trusted local software. Anyone who obtains a valid token or
 - Public mode binds the Agent to `127.0.0.1`
 - Cloudflare provides HTTPS from iPhone to Cloudflare edge
 - Basic browser security headers
+- Request size limits: 64 KB for headers and 64 KB for body
+- Input limits: 256 characters per text injection, wheel delta clamped to ±1200
 
 ## Current Gaps
 

@@ -28,6 +28,8 @@
   var lastPoint = null;
   var textValue = "";
   var streamNonce = 0;
+  var inputQueue = Promise.resolve();
+  var inputPending = 0;
 
   setup();
 
@@ -144,8 +146,9 @@
 
   function start() {
     connectionText.textContent = "连接中";
-    fetchStatus();
-    reconnect();
+    fetchStatus().then(function (authorized) {
+      if (authorized) reconnect();
+    });
   }
 
   function reconnect() {
@@ -161,12 +164,25 @@
   }
 
   function fetchStatus() {
-    authedFetch("/api/status").catch(function () {
-      localStorage.removeItem(tokenKey);
-      token = "";
-      screen.removeAttribute("src");
+    return authedFetch("/api/status").then(function () {
+      return true;
+    }).catch(function (error) {
+      if (!error || error.status !== 401) {
+        connectionText.textContent = "连接中断";
+        return false;
+      }
+
+      clearToken();
       showPair();
+      return false;
     });
+  }
+
+  function clearToken() {
+    token = "";
+    localStorage.removeItem(tokenKey);
+    document.cookie = "wr_token=; Max-Age=0; Path=/";
+    screen.removeAttribute("src");
   }
 
   function onPointerDown(event) {
@@ -288,12 +304,21 @@
 
   function sendInput(data) {
     if (!token) return Promise.resolve();
+    if (inputPending >= 6) return inputQueue;
 
-    return authedFetch("/api/input", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: form(data)
-    }).catch(function () {});
+    inputPending++;
+    inputQueue = inputQueue.then(function () {
+      if (!token) return;
+      return authedFetch("/api/input", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: form(data)
+      }).catch(function () {});
+    }).then(function () {
+      inputPending--;
+    });
+
+    return inputQueue;
   }
 
   function authedFetch(url, options) {
@@ -301,7 +326,11 @@
     options.headers = options.headers || {};
     options.headers["X-Remote-Token"] = token;
     return fetch(url, options).then(function (response) {
-      if (!response.ok) throw new Error(String(response.status));
+      if (!response.ok) {
+        var error = new Error(String(response.status));
+        error.status = response.status;
+        throw error;
+      }
       return response;
     });
   }

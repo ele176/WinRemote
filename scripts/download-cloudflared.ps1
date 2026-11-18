@@ -8,9 +8,22 @@ $url = "https://github.com/cloudflare/cloudflared/releases/latest/download/cloud
 
 New-Item -ItemType Directory -Force -Path $tools | Out-Null
 
-Write-Host "Downloading $url"
-Invoke-WebRequest -Uri $url -OutFile $tmp
-Move-Item -LiteralPath $tmp -Destination $target -Force
+try {
+  Write-Host "Downloading $url"
+  Invoke-WebRequest -Uri $url -OutFile $tmp
+
+  $bytes = [System.IO.File]::ReadAllBytes($tmp)
+  if ($bytes.Length -lt 5MB -or $bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) {
+    throw "Downloaded file is not a Windows executable. Check the network or proxy and run again."
+  }
+
+  Move-Item -LiteralPath $tmp -Destination $target -Force
+}
+finally {
+  if (Test-Path -LiteralPath $tmp) {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+  }
+}
 
 Write-Host "Installed $target"
 & $target --version
